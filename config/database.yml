@@ -1,0 +1,23 @@
+default: &default
+  adapter: mysql2
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  encoding: utf8
+  host: <%= ENV.fetch('MYSQL_HOST', 'localhost') %>
+  username: <%= ENV.fetch("MYSQL_USERNAME", "root") %>
+  password: <%= ENV.fetch("MYSQL_PASSWORD", "") %>
+  charset: utf8mb4
+  collation: utf8mb4_bin
+  encoding: utf8mb4
+
+development:
+  <<: *default
+  database: travel_campaign_notifer_development
+
+test:
+  <<: *default
+  database: travel_campaign_notifer_test
+
+production:
+  <<: *default
+  database: travel_campaign_notifer_production
