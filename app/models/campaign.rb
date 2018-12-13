@@ -20,10 +20,7 @@
 #  cost_currency_unit        :string(255)      default("円"), not null
 #  departure_place           :string(255)
 #  destination_place         :string(255)
-#  departure_place_lat       :float(24)
-#  departure_place_lon       :float(24)
-#  destination_place_lat     :float(24)
-#  destination_place_lon     :float(24)
+#  condition                 :text(65535)
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #
@@ -35,4 +32,37 @@
 #
 
 class Campaign < ApplicationRecord
+  BITLY_API_ROOT_URL = "https://api-ssl.bitly.com/v4/"
+
+  before_save do
+    if self.url.size > 255
+      shorted_url = self.get_short_url
+      self.url = shorted_url
+      self.shortener_url = shorted_url
+    end
+  end
+
+  def self.import_campaigns!
+  end
+
+  def short_url
+    if shortener_url.blank?
+      convert_to_short_url!
+    end
+    return self.shortener_url
+  end
+
+  def convert_to_short_url!
+    update!(shortener_url: self.get_short_url)
+  end
+
+  def get_short_url
+    shorted_url = RequestParser.request_and_parse_json(
+      url: BITLY_API_ROOT_URL + "shorten",
+      method: :post,
+      header: {"Authorization" => "Bearer ACCESS_TOKEN", "Content-Type" => "application/json"},
+      param: {"long_url" => self.url}
+    )
+    return shorted_url["link"]
+  end
 end

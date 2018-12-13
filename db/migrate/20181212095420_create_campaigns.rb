@@ -18,10 +18,7 @@ class CreateCampaigns < ActiveRecord::Migration[5.2]
       t.string :cost_currency_unit, null: false, default: "円"
       t.string :departure_place
       t.string :destination_place
-      t.float :departure_place_lat
-      t.float :departure_place_lon
-      t.float :destination_place_lat
-      t.float :destination_place_lon
+      t.text :condition
       t.timestamps
     end
     add_index :campaigns, [:campaign_id, :type], unique: true

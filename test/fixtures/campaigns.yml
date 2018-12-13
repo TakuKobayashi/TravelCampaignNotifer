@@ -20,10 +20,7 @@
 #  cost_currency_unit        :string(255)      default("円"), not null
 #  departure_place           :string(255)
 #  destination_place         :string(255)
-#  departure_place_lat       :float(24)
-#  departure_place_lon       :float(24)
-#  destination_place_lat     :float(24)
-#  destination_place_lon     :float(24)
+#  condition                 :text(65535)
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #
