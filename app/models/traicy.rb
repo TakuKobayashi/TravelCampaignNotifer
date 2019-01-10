@@ -50,4 +50,16 @@ class Traicy < Article
     self.import_websites!(websites: articles)
     return articles
   end
+
+  def import_campain!
+    html_dom = RequestParser.request_and_parse_normalize_html(url: self.src)
+    content_dom = html_dom.css('.entry-content').first
+    link_urls = content_dom.css('a').map{|doc| doc[:href] }
+    outside_page_urls = link_urls.select{|url| !WebNormalizer.is_same_host?(main_url: self.src, check_url: url) }
+    content_dom.css("p").each do |body_dom|
+      
+    end
+    return outside_page_urls
+    #self.campaigns
+  end
 end
