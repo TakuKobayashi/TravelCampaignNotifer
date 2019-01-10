@@ -1,6 +1,13 @@
 require 'xmlsimple'
 
 module RequestParser
+  def self.request_and_parse_normalize_html(url: ,method: :get, params: {}, header: {}, body: {}, options: {})
+    text = self.request_and_response_body(url: url,method: method, params: params, header: header, body: body, options: options)
+    sanitized_text = Charwidth.normalize(text)
+    doc = Nokogiri::HTML.parse(sanitized_text)
+    return doc
+  end
+
   def self.request_and_parse_html(url: ,method: :get, params: {}, header: {}, body: {}, options: {})
     text = self.request_and_response_body(url: url,method: method, params: params, header: header, body: body, options: options)
     doc = Nokogiri::HTML.parse(text)
