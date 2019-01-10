@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: travel_websites
+# Table name: travel_media
 #
 #  id                  :bigint(8)        not null, primary key
 #  title               :string(255)      not null
@@ -12,12 +12,12 @@
 #
 # Indexes
 #
-#  index_travel_websites_on_host_url  (host_url) UNIQUE
+#  index_travel_media_on_target_url  (target_url) UNIQUE
 #
 
 require 'test_helper'
 
-class TravelWebsiteTest < ActiveSupport::TestCase
+class TravelMediumTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

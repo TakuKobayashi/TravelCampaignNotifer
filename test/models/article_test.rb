@@ -15,6 +15,10 @@
 #  index_articles_on_basic_src  (basic_src)
 #
 
-class Lccjp < Article
-  CRAWL_ROOT_URL = "https://dsk.ne.jp/news/"
+require 'test_helper'
+
+class ArticleTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
 end
