@@ -3,6 +3,7 @@
 # Table name: travel_media
 #
 #  id                  :bigint(8)        not null, primary key
+#  type                :string(255)
 #  title               :string(255)      not null
 #  host_url            :string(255)      not null
 #  target_url          :string(255)      not null

@@ -48,9 +48,6 @@ class Campaign < ApplicationRecord
     end
   end
 
-  def self.import_campaigns!
-  end
-
   def short_url
     if shortener_url.blank?
       convert_to_short_url!

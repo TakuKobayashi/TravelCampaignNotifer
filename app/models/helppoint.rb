@@ -7,6 +7,7 @@
 #  title       :string(255)      not null
 #  basic_src   :string(255)      not null
 #  remain_src  :text(65535)
+#  image_url   :text(65535)
 #  crawl_state :integer          default("standby"), not null
 #  options     :text(65535)
 #
