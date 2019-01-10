@@ -17,4 +17,5 @@
 #
 
 class CampaignCalendarBot < ApplicationRecord
+  belongs_to :from, polymorphic: true, required: false
 end

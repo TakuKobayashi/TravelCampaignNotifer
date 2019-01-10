@@ -16,4 +16,7 @@
 #
 
 class TravelMedium < ApplicationRecord
+  serialize :options, JSON
+
+  has_many :campaigns, as: :source, class_name: 'Campaign'
 end

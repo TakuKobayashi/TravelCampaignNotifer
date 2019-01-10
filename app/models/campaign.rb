@@ -34,6 +34,10 @@
 #
 
 class Campaign < ApplicationRecord
+  serialize :options, JSON
+
+  belongs_to :source, polymorphic: true, required: false
+
   BITLY_API_ROOT_URL = "https://api-ssl.bitly.com/v4/"
 
   before_save do
