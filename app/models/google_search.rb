@@ -33,10 +33,5 @@
 #  index_campaigns_on_url                   (url)
 #
 
-require 'test_helper'
-
-class CampaignTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class GoogleSearch < Campaign
 end

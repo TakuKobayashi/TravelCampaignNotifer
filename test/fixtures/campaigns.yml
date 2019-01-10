@@ -4,6 +4,7 @@
 #
 #  id                        :bigint(8)        not null, primary key
 #  campaign_id               :string(255)
+#  travel_website_id         :integer
 #  type                      :string(255)
 #  title                     :string(255)      not null
 #  url                       :string(255)      not null

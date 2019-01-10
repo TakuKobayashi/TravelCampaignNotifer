@@ -2,6 +2,7 @@ class CreateCampaigns < ActiveRecord::Migration[5.2]
   def change
     create_table :campaigns do |t|
       t.string :campaign_id
+      t.integer :travel_website_id
       t.string :type
       t.string :title, null: false
       t.string :url, null: false
