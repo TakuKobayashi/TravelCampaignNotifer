@@ -13,6 +13,7 @@ class CreateCampaigns < ActiveRecord::Migration[5.2]
       t.datetime :end_at
       t.datetime :activate_start_at, null: false
       t.datetime :activate_end_at
+      t.integer :limit_amount, limit: 8
       t.float :min_cost, null: false, default: 0
       t.float :max_cost, null: false, default: 0
       t.string :cost_currency_unit, null: false, default: "円"

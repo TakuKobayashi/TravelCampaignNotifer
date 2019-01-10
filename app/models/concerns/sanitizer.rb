@@ -19,16 +19,58 @@ module Sanitizer
     return text.scan(/[#＃][Ａ-Ｚａ-ｚA-Za-z一-鿆0-9０-９ぁ-ヶｦ-ﾟー]+/).map(&:strip)
   end
 
-  def self.delete_hashtag_and_replyes(text)
-    return text.gsub(/[#＃@][Ａ-Ｚａ-ｚA-Za-z一-鿆0-9０-９ぁ-ヶｦ-ﾟー_]+/, "")
+  def self.delete_sharp(text)
+    return text.gsub(/[#＃]/, "")
+  end
+
+  def self.search_phone_number(text)
+    return text.match(/[0-9]{10,11}|\d{2,4}-\d{2,4}-\d{4}/).to_s
+  end
+
+  def self.separate_urls(text)
+    result = text
+    #URLがあったらそれは別にする
+    urls = URI.extract(result)
+    urls.each do |url|
+      result.gsub!(url, "")
+    end
+    return result, urls
+  end
+
+  def self.scan_quarts(text)
+    double_quarts = text.scan(/\"(.*)\"/).map(&:join).map(&:strip)
+    single_quarts = text.scan(/\'(.*)\'/).map(&:join).map(&:strip)
+    return double_quarts + single_quarts
+  end
+
+  def self.scan_url_path_resources(text, exts = [])
+    return text.scan(/((https?|ftp)(:\/\/)|(\.\.\/|\.\/|\/))([-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+#{exts.join("|")})/).map(&:join).map(&:strip)
+  end
+
+  def self.scan_base64_image(text)
+    return text.scan(/\"data:image\/([a-zA-Z]*);base64,([^\"]*)\"/).map{|scanned| scanned.join.match(/\".*\"/).to_s.strip }
   end
 
   def self.delete_urls(text)
     return text.gsub(/(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)/, "")
   end
 
-  def self.delete_sharp(text)
-    return text.gsub(/[#＃]/, "")
+  #記号を除去
+  def self.delete_symbols(text)
+    return text.gsub(/[【】、。《》「」〔〕・（）［］｛｝！＂＃＄％＆＇＊＋，－．／：；＜＝＞？＠＼＾＿｀｜￠￡￣\(\)\[\]<>{},!? \.\-\+\\~^='&%$#\"\'_\/;:*‼•一]/, "")
+  end
+
+  def self.scan_brace(text)
+    return text.scan(/{.*}/)
+  end
+
+  def self.separate_kaomoji(text)
+    result = text
+    kaomojis = text.scan(/(?:[^0-9A-Za-zぁ-ヶ一-龠]|[ovっつ゜ニノ三二])*[\(∩꒰（](?!(?:[0-9A-Za-zぁ-ヶ一-龠]|[ｦ-ﾟ]){3,}).{3,}[\)∩꒱）](?:[^0-9A-Za-zぁ-ヶ一-龠]|[ovっつ゜ニノ三二])*/)
+    kaomojis.each do |kaomoji|
+      result.gsub!(kaomoji, "")
+    end
+    return result, kaomojis
   end
 
   def self.basic_sanitize(text)
@@ -36,6 +78,18 @@ module Sanitizer
     sanitized_word = Charwidth.normalize(text)
     #絵文字を除去
     sanitized_word = sanitized_word.encode('SJIS', 'UTF-8', invalid: :replace, undef: :replace, replace: '').encode('UTF-8')
+    # 余分な空欄を除去
+    sanitized_word.strip!
+    return sanitized_word
+  end
+
+  def self.twitter_basic_sanitize(text)
+    sanitized_word = self.basic_sanitize(text)
+    #返信やハッシュタグを除去
+    sanitized_word = sanitized_word.gsub(/[#＃@][Ａ-Ｚａ-ｚA-Za-z一-鿆0-9０-９ぁ-ヶｦ-ﾟー_]+/, "")
+    sanitized_word.strip!
+    #リツイートにRTとつける事が多いので、そこの部分は取り除く
+    sanitized_word = sanitized_word.gsub(/^RT[;: ]/, "")
     # 余分な空欄を除去
     sanitized_word.strip!
     return sanitized_word

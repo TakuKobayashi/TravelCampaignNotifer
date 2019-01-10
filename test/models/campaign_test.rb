@@ -15,6 +15,7 @@
 #  end_at                    :datetime
 #  activate_start_at         :datetime         not null
 #  activate_end_at           :datetime
+#  limit_amount              :bigint(8)
 #  min_cost                  :float(24)        default(0.0), not null
 #  max_cost                  :float(24)        default(0.0), not null
 #  cost_currency_unit        :string(255)      default("円"), not null
