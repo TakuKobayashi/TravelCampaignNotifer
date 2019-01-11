@@ -27,6 +27,16 @@ module Sanitizer
     return text.match(/[0-9]{10,11}|\d{2,4}-\d{2,4}-\d{4}/).to_s
   end
 
+  def self.scan_cost_numbers(text)
+    currency_words = ["円", "¥", "ドル", "$", "＄"]
+    return text.scan(/-?[0-9]{1,}(,|[0-9])*(#{currency_words.join("|")})/).map(&:join)
+  end
+
+  def self.scan_start_date(text)
+    date_start_words = ["から", "~", "〜", "以降"]
+    return text.scan(/(\d{4}[-\/.年]\d{1,2}[-\/.月]\d{1,2}日?|\d{1,2}[-\/.月]\d{1,2}日?)(#{date_start_words.join("|")})/).map(&:join)
+  end
+
   def self.separate_urls(text)
     result = text
     #URLがあったらそれは別にする
